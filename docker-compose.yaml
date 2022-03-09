@@ -1,0 +1,19 @@
+version: '3'
+services:
+  jaeger:
+    image: jaegertracing/all-in-one
+    ports:
+      - 6831:6831/udp
+      - 16686:16686
+  api:
+    build: microservices/products_api
+
+  web:
+    build: microservices/web
+    ports:
+      - 5000:5001
+    environment:
+      - PRODUCTS_API_URL=http://api:5001
+    depends_on:
+      - api
+
